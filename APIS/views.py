@@ -2,9 +2,11 @@
 # from django.shortcuts import render
 from rest_framework.response import Response
 from students.models import Student
-from .serializers import StudentsSerializer
+from .serializers import StudentsSerializer, EmployeeSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from employee.models import Employee
 # Create your views here.
 
 # manual serilazation way
@@ -50,3 +52,21 @@ def studentDetailView(request, pk):
             student.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
          
+
+class Employees(APIView):
+             def get(self, request):
+                employees = Employee.objects.all()
+                serializer = EmployeeSerializer(employees, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+             
+             def post(self, request):
+                  serializer = EmployeeSerializer(data=request.data)
+                  if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                  else:
+                    return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+                  
+
+
+
