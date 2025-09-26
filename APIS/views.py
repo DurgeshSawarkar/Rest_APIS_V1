@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from employee.models import Employee
-from rest_framework import mixins, generics
+from rest_framework import mixins, generics, viewsets
 # Create your views here.
 
 # manual serilazation way
@@ -127,7 +127,7 @@ def studentDetailView(request, pk):
 #         return self.destroy(request,pk)
 
 
-
+"""
 #Generics
 class Employees(generics.ListAPIView, generics.CreateAPIView):
       queryset = Employee.objects.all()
@@ -138,3 +138,17 @@ class EmmployeesDetail(generics.RetrieveAPIView, generics.UpdateAPIView, generic
       queryset = Employee.objects.all()
       serializer_class =EmployeeSerializer    
       lookup_field ="pk"
+
+      """
+
+class EmployeeViewset(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Employee.objects.all()
+        serializer = EmployeeSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def create(self, request):
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
