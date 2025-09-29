@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'students',
     'APIS',
     'employee',
+    'blog',
 ]
 
 MIDDLEWARE = [
