@@ -12,6 +12,7 @@ from employee.models import Employee
 from rest_framework import mixins, generics, viewsets
 from blog.models import Blog, Comment
 from blog.serializers import BlogSerializer, CommentSerializer
+from .pagination import CustomPagination
 # Create your views here.
 
 # manual serilazation way
@@ -179,14 +180,29 @@ class EmmployeesDetail(generics.RetrieveAPIView, generics.UpdateAPIView, generic
 class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    pagination_class = CustomPagination
 
 
 
 class BlogsView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+   
 
 
 class CommentView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+
+class BlogDetailview(generics.RetrieveUpdateDestroyAPIView):
+    queryset =Blog.objects.all()
+    serializer_class =BlogSerializer
+    lookup_field ='pk'
+  
+
+
+class CommentDetailview(generics.RetrieveUpdateDestroyAPIView):
+      queryset =Comment.objects.all()
+      serializer_class =CommentSerializer
+      lookup_field ='pk'
