@@ -13,6 +13,7 @@ from rest_framework import mixins, generics, viewsets
 from blog.models import Blog, Comment
 from blog.serializers import BlogSerializer, CommentSerializer
 from .pagination import CustomPagination
+from employee.filters import EmployeeFilter
 # Create your views here.
 
 # manual serilazation way
@@ -181,7 +182,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPagination
-    filterset_fields = ['post']
+    filterset_class = EmployeeFilter
 
 
 
